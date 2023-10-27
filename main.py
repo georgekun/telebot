@@ -41,9 +41,11 @@ async def get_text_from_doc(message:Message):
 
     result = await service.get_text(bot = BOT, vosk = vosk, message = message)
 
+    await BOT.delete_message(chat_id=message.from_user.id, message_id=m_id)
     if result:
-        await BOT.delete_message(chat_id=message.from_user.id, message_id=m_id)
         await BOT.send_message(chat_id=message.from_user.id, text=f"[ распознано ]\n{result}")
+    else:
+        await BOT.send_message(chat_id=message.from_user.id, text=f"Не удалось распознать речь.")
 
 
 async def main():
