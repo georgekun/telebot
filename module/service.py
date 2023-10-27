@@ -20,13 +20,14 @@ async def get_text(bot,vosk,message:Message):
     try:
         vosk.convert_audio(audio_file, convert_file)
         result = vosk.transcriber(path_audio=convert_file)
+        os.remove(convert_file)
     except:
         result = None
         await bot.send_message(chat_id=message.from_user.id, text="Произошла ошибка :/ \nПовторите еще раз.")
 
-    os.remove(convert_file)
-    os.remove(audio_file)
+    finally:
+        os.remove(audio_file)
+
 
     return result
-
 

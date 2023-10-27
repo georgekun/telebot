@@ -1,8 +1,8 @@
 import json
 import struct
 
-import vosk
 import ffmpeg
+import vosk
 
 class Vosk:
     def __init__(self, model_path):
@@ -27,8 +27,8 @@ class Vosk:
 
         return text
 
-    """На случай если аудиоформат не тот"""
-    def convert_audio(self,input_file, output_file):
+    #Почти всегда нужно будет преоброзовывать файл в нужный формат
+    def convert_audio(self, input_file, output_file):
         try:
             input_stream = ffmpeg.input(input_file)
             output_stream = ffmpeg.output(input_stream, output_file, acodec='pcm_s16le', ar=16000, ac=1)

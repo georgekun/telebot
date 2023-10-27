@@ -1,9 +1,9 @@
 # Используем официальный образ Python
-FROM python:3.8-slim
+FROM python:3.10
 
-# Установим зависимости
 RUN apt-get update && apt-get install -y \
     python3-pip \
+    ffmpeg \   # Добавляем установку FFmpeg
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -13,8 +13,7 @@ WORKDIR /app
 
 # Копируем файлы зависимостей
 # Копируем requirements.txt и устанавливаем зависимости
-COPY requirements.txt /app/
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -r requirements.txt
 
 COPY . /app/
 
