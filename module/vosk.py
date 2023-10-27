@@ -20,7 +20,7 @@ class Vosk:
                     break
                 if self.kaldi.AcceptWaveform(data):
                     res = json.loads(self.kaldi.Result())
-                    text += res["text"] + ", "
+                    text += res["text"] + ". "
 
             res = json.loads(self.kaldi.FinalResult())
             text += res["text"]
