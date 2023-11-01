@@ -1,3 +1,5 @@
 .env
 venv
 vosk-model-small-ru-0.22
+.idea
+__pycache__/
