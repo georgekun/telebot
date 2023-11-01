@@ -2,7 +2,8 @@ import os
 
 from aiogram.types import Message, ContentType
 
-from . import tools
+from moviepy.editor import VideoFileClip
+
 async def get_text(bot,vosk,message:Message):
     audio_file = "tmp/tmp.wav"
     convert_file = "tmp/convert.wav"
@@ -14,7 +15,7 @@ async def get_text(bot,vosk,message:Message):
     elif message.content_type == ContentType.VIDEO_NOTE:
         file = message.video_note
         await bot.download(file, destination="tmp/tmp.mp4")
-        tools.get_audio_from_video("tmp/tmp.mp4")
+        get_audio_from_video("tmp/tmp.mp4")
         os.remove("tmp/tmp.mp4")
 
     try:
@@ -27,7 +28,14 @@ async def get_text(bot,vosk,message:Message):
 
     finally:
         os.remove(audio_file)
-
-
+        
     return result
+
+
+def get_audio_from_video(path):
+    video_path = path
+    video = VideoFileClip(video_path)
+    audio = video.audio
+    audio.write_audiofile("tmp/tmp.wav")
+    video.close()
 

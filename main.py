@@ -6,6 +6,8 @@ from aiogram import Bot, Dispatcher
 from aiogram.enums import ParseMode
 from aiogram.filters import CommandStart, Command
 from aiogram.types import Message,ContentType
+from aiogram import F
+
 
 from module.vosk import Vosk
 from module import service
@@ -14,7 +16,7 @@ load_dotenv()
 
 BOT = Bot(token=os.getenv("TG_TOKEN"), parse_mode=ParseMode.HTML)
 dp = Dispatcher()
-vosk = Vosk("vosk-model-small-ru-0.22")
+# vosk = Vosk("vosk-model-small-ru-0.22")
 
 @dp.message(CommandStart())
 async def welcome(message: Message):
@@ -30,18 +32,22 @@ async def welcome(message: Message):
     await BOT.send_message(chat_id=message.from_user.id,text =text)
 
 
-@dp.message()
+@dp.message() 
 async def get_text_from_doc(message:Message):
+    chat_id = message.chat.id
+    chat_type = message.chat.type
+    # надо будет сохранить эти данные в базу
     if message.content_type != ContentType.VOICE and message.content_type != ContentType.VIDEO_NOTE:
-        await BOT.send_message(chat_id=message.from_user.id, text=f"Можно отправлять либо кружки, либо аудио")
         return
+    
 
-    response_message = await BOT.send_message(chat_id=message.from_user.id, text="сейчас...")
-    m_id = response_message.message_id
+    # response_message = await BOT.send_message(chat_id=message.from_user.id, text="сейчас...")
+    # m_id = response_message.message_id
 
     result = await service.get_text(bot = BOT, vosk = vosk, message = message)
 
-    await BOT.delete_message(chat_id=message.from_user.id, message_id=m_id)
+    # await BOT.delete_message(chat_id=message.from_user.id, message_id=m_id)
+
     if result:
         await BOT.send_message(chat_id=message.from_user.id, text=f"[ распознано ]\n{result}")
     else:

@@ -37,6 +37,7 @@ class Vosk:
         except ffmpeg.Error as e:
             print(f'Ошибка при конвертации аудио: {e}')
 
+
     """Этот метод получает запись микрофона. В данном проекте не нужен"""
     def speech_to_text(self, pcm):
         struct_pcm = struct.pack("h" * len(pcm), *pcm)
